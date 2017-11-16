@@ -5,7 +5,7 @@ const { MONGO_URL } = process.env;
 let db;
 
 export async function initDb() {
-  const url = MONGO_URL || 'localhost/cartbot';
+  const url = MONGO_URL || 'mongodb://localhost/cartbot';
   mongoose.connect(url, { useMongoClient: true });
   mongoose.Promise = global.Promise;
 
