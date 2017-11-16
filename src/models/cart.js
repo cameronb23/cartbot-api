@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 const schema = new Schema({
   pid: String,
   price: Number,
+  size: String,
   login: {
     email: String,
     password: String
