@@ -1,23 +1,19 @@
-// TODO: start databases
-import { Database, Model } from 'mongorito';
-import timestamps from 'mongorito-timestamps';
+import mongoose from 'mongoose';
+
+const { MONGO_URL } = process.env;
 
 let db;
 
-export class User extends Model {}
-export class Cart extends Model {}
-
 export async function initDb() {
-  db = new Database(process.env.MONGO_URL || 'mongodb://api:gang123@ds163745.mlab.com:63745/cartbot');
+  const url = MONGO_URL || 'localhost/cartbot';
+  mongoose.connect(url, { useMongoClient: true });
+  mongoose.Promise = global.Promise;
 
-  await db.connect();
+  const { PORT = 3000 } = process.env;
 
-  db.use(timestamps());
-
-  db.register(User);
-  db.register(Cart);
-}
-
-export async function saveCart(email, password) {
-
+  db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'connection error:'));
+  db.once('open', () => {
+    console.log(`Listening for Mongo on port ${PORT}`)
+  });
 }
